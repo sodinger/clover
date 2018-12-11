@@ -51,7 +51,8 @@ public enum ServerHeartBeat {
         }
     }
    public void startup(){
-       if(null==scheduledThreadPoolExecutor){
+       // 执行stop()后isStop=true, 此时线程是关闭的，但不是null，继续执行会抛出RejectedExecutionException异常  //20181211xnl
+       if(isStop || null==scheduledThreadPoolExecutor){
            scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1);
        }
        scheduledThreadPoolExecutor.scheduleAtFixedRate(new Runnable() {
