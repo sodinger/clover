@@ -51,7 +51,8 @@ public abstract class AbstractModuleScheduler {
     public void registerToZK(String moduleType, String ip, List<String> jobClassList, String port, String systemId) {
         try {
             if (CommonConstants.MODULE_TYPE_SERVER.equals(moduleType)) {//服务端
-                String serverId = IpUtil.getLocalName() + "@" + ip + "@" + systemId + "@" + DateUtil.currentDateTime();
+                // DateUtil.currentDateTime()这个时间中包含空格，当客户端get这个node时会以空格为结束符，导致提示节点不存在。
+                String serverId = IpUtil.getLocalName() + "@" + ip + "@" + systemId + "@" + System.currentTimeMillis();
                 BasicDBObject serverNode = new BasicDBObject();
                 serverNode.append(CommonConstants.ID, serverId);
                 serverNode.append(CommonConstants.PORT, port);
@@ -67,7 +68,8 @@ public abstract class AbstractModuleScheduler {
                 }
                 BasicDBList jobClass = new BasicDBList();
                 jobClass.addAll(jobClassList);
-                String clientId = IpUtil.getLocalName() + "@" + ip + "@" + systemId + "@"+ DateUtil.currentDateTime();
+                // DateUtil.currentDateTime()这个时间中包含空格，当客户端get这个node时会以空格为结束符，导致提示节点不存在。
+                String clientId = IpUtil.getLocalName() + "@" + ip + "@" + systemId + "@"+ System.currentTimeMillis();
                 BasicDBObject clientNode = new BasicDBObject();
                 clientNode.append(CommonConstants.ID, clientId);
                 clientNode.append(CommonConstants.JOB_CLASS, jobClass);
