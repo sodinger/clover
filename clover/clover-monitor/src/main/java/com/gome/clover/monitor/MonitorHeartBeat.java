@@ -52,7 +52,7 @@ public enum MonitorHeartBeat {
     private static int counter = 0;
     private static  CuratorFramework curatorFramework = ZKUtil.create();
     public void startup() {
-        if(null==scheduledThreadPoolExecutor){
+        if(isStop || null==scheduledThreadPoolExecutor){
             scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1);
         }
         scheduledThreadPoolExecutor.scheduleAtFixedRate(new Runnable() {
